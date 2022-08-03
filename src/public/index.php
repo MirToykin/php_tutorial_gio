@@ -2,11 +2,14 @@
 
 declare(strict_types=1);
 
-require_once '../Transaction.php';
+use App\PaymentGateway\Paddle\Transaction;
 
-$amount = (new Transaction(100, 'Transaction 1'))
-    ->addTax(8)
-    ->applyDiscount(10)
-    ->getAmount();
+require __DIR__ . '/../vendor/autoload.php';
 
-var_dump($amount);
+$id = new \Ramsey\Uuid\UuidFactory();
+
+echo $id->uuid4();
+
+$transaction = new Transaction(100, 'Transaction');
+
+var_dump($transaction);
