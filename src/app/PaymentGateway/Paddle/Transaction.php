@@ -4,29 +4,25 @@ declare(strict_types=1);
 
 namespace App\PaymentGateway\Paddle;
 
+use App\Enums\Status;
+
 class Transaction
 {
-    public function __construct(
-        private float $amount,
-        private string $description
-    )
+    private string $status;
+
+    public function __construct()
     {
+        $this->status = Status::PENDING;
     }
 
-    public function addTax(float $rate): self
+    public function setStatus(string $status): self
     {
-        $this->amount += $this->amount * $rate/100;
+        if (!isset(Status::ALL_STATUSES[$status])) {
+            throw new \InvalidArgumentException('Invalid status');
+        }
+
+        $this->status =$status;
+
         return $this;
-    }
-
-    public function applyDiscount(float $rate): self
-    {
-        $this->amount -= $this->amount * $rate/100;
-        return $this;
-    }
-
-    public function getAmount(): float
-    {
-        return $this->amount;
     }
 }
